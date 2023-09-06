@@ -8,6 +8,8 @@ from typing import Tuple
 
 # Файл с токеном сессии.
 token_file_name: str = "./token"
+# Адрес ответного скрипта на сервере.
+url: str = "http://csvtest/cgi-bin/auth_cgi.py"
 
 
 def parse_input(inp: list) -> Tuple[str, str]:
@@ -93,7 +95,7 @@ if __name__ == '__main__':
 
     # Получение токена
     response: requests.Response = requests.\
-        get('http://csvtest/cgi-bin/auth_cgi.py?login={0}&password={1}'.format(login, password))
+        get(url + '?login={0}&password={1}'.format(login, password))
     # Деление ответа на две строки (в первой статус, во второй - токен)
     response: list = response.text.split(sep='\r\n')
 

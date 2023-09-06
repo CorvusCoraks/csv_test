@@ -10,7 +10,7 @@ from common import TokenType
 
 # Формат расшифрованного ответа на запрос.
 Parsed = Dict[str, Optional[typing.Union[str, list]]]
-# Адрес ответного скрипра на сервере.
+# Адрес ответного скрипта на сервере.
 url: str = "http://csvtest/cgi-bin/get_cgi.py"
 # Относительный путь (относительно скрипта) к папке с сохраняемыми файлами.
 saved_dir: str = '../files'
