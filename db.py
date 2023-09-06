@@ -4,6 +4,7 @@ from common import RequestStatus, TokenType
 import mysql.connector
 from datetime import datetime, timedelta
 import random
+import db_data
 
 
 # Время бездействия сессии, сек
@@ -41,17 +42,26 @@ class UsersDBInterface(abc.ABC):
 
 class SQL(UsersDBInterface):
     """ Возможная реализация. """
-    def __init__(self, waiting_time: int):
+    def __init__(self, waiting_time: int, script_user: str, script_pass: str, db: str, table: str, ip: str):
+        """
+
+        :param waiting_time: Время допустимого простоя.
+        :param script_user: Имя пользователя (для скрипта)
+        :param script_pass: Пароль пользователя (для скрипта)
+        :param db: Имя базы данных
+        :param table: Таблица базы данных с пользователями.
+        :param ip: ip-адрес SQL-сервера.
+        """
         super().__init__()
         # Время допустимого простоя в ожидании очередного обращения одного пользователя.
         # Если время истекло, сеанс считается завершённым и токен сессии становится неактуальным.
         # Будет нужна новая авторизация.
         self.__waiting_time = waiting_time
-        self.__db_user: str = 'root'
-        self.__db_password: str = 'root'
-        self.__db: str = 'users'
-        self.__table: str = 'users_list'
-        self.__host: str = '127.0.0.1'
+        self.__db_user: str = script_user
+        self.__db_password: str = script_pass
+        self.__db: str = db
+        self.__table: str = table
+        self.__host: str = ip
 
     def __token_generate(self) -> TokenType:
         """ Генерация токена сеанса. """
@@ -158,12 +168,3 @@ class SQL(UsersDBInterface):
             return RequestStatus.REQUEST_TIMEOUT
 
         return RequestStatus.OK
-
-
-if __name__ == '__main__':
-    sql = SQL(60)
-    # print(sql.is_real_user('foo_login'))
-    # print(sql.login('foo_login', '12345'))
-    # print(sql.get_token('foo_login'))
-    # print(sql.renew_timestamp(98239))
-    print(sql.check_token(98239))

@@ -8,6 +8,7 @@ import csv
 from operator import itemgetter
 import pickle
 from db import UsersDBInterface, SQL, SESSION_WAITING_TIME
+import db_data
 
 
 # Представление файла .csv внутри скрипта: список кортежей, где каждый кортеж - одна строка файла.
@@ -183,7 +184,9 @@ if __name__ == "__main__":
         send_answer(status, None)
         exit()
 
-    if not is_session_active(SQL(SESSION_WAITING_TIME), TokenType(request['token'][0])):
+    if not is_session_active(SQL(SESSION_WAITING_TIME, db_data.USER_NAME, db_data.USER_PASSWORD, db_data.DB_NAME,
+                                 db_data.TABLE_NAME, db_data.DB_IP),
+                             TokenType(request['token'][0])):
         # Токен устарел, сессия закрыта.
         send_answer(RequestStatus.REQUEST_TIMEOUT, None)
         exit()

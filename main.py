@@ -143,6 +143,8 @@ if __name__ == '__main__':
                     # Запись в файл
                     csvwriter = csv.writer(csvfile)
                     csvwriter.writerows(content)
+
+                print("Файл успешно сохранён под именем {}".format(filename))
             except:
                 print("Не удалось сохранить файл.")
         else:

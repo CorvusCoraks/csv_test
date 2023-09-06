@@ -4,6 +4,7 @@ import os
 from common import RequestStatus, TokenType
 import unittest
 from db import UsersDBInterface, SQL, SESSION_WAITING_TIME
+import db_data
 
 
 def check_query(query: dict) -> RequestStatus:
@@ -64,7 +65,8 @@ if __name__ == "__main__":
     print("Content-Type: text/plain")
     print()
 
-    db: UsersDBInterface = SQL(SESSION_WAITING_TIME)
+    db: UsersDBInterface = SQL(SESSION_WAITING_TIME, db_data.USER_NAME, db_data.USER_PASSWORD, db_data.DB_NAME,
+                                 db_data.TABLE_NAME, db_data.DB_IP)
 
     # Дефолтные значения.
     status: RequestStatus = RequestStatus.OK
